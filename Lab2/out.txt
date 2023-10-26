@@ -1,0 +1,6 @@
+Value for 'name': John
+Value for 'age': 30
+Value for '123': Sample value
+Value for 'unknownKey': null
+Search 'name' key: true
+Search 'unknownKey' key: false
