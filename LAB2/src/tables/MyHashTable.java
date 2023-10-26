@@ -6,10 +6,10 @@ import java.util.Map;
 
 public class MyHashTable{
 
-        Map<Integer, ArrayList<Object>> hashTable;
+        Map<int, ArrayList<Object>> hashTable;
 
         public MyHashTable() {
-                this.hashTable = new HashMap<>();
+                this.hashTable = new HashMap<int,ArrayList<Object>>();
         }
 
         public ArrayList<Object> getByKey(Object key) {
