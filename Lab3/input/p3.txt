@@ -1,0 +1,10 @@
+main{
+    int i, sum;
+	sum=0;
+	i=0;
+	array<int>[4] myArray=[1,2,3,4];
+	while(i<=nr){
+	    write(myArray);
+	    i++;
+	}
+}

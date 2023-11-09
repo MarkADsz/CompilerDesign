@@ -1,0 +1,15 @@
+main{
+	int i,primeDivisors;
+	i=0;
+	primeDivisors=0;
+
+	while(i<=n){
+		if(n%i==0){
+			primeDivisors=primeDivisors+1;}
+		i=i+1;
+	}
+	if(primeDivisors==2){
+		write("yes");}
+	else{
+		write("no");}
+}
