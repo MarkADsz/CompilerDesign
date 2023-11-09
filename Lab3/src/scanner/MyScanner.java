@@ -24,6 +24,10 @@ public class MyScanner {
 
     private boolean isError;
 
+    PrintStream pifFileStream;
+
+    PrintStream stFileStream;
+
     public MyScanner(String inputFile,String outputFile, String tokenFile) throws FileNotFoundException {
         this.inputFile=inputFile;
         this.outputFile=outputFile;
@@ -32,8 +36,9 @@ public class MyScanner {
         this.pif = new MyPIFTable();
         this.readTokens();
         this.isError=false;
-        PrintStream fileStream = new PrintStream(this.outputFile);
-        System.setOut(fileStream);
+        this.pifFileStream = new PrintStream(this.outputFile+"//PIF.out");
+        this.stFileStream = new PrintStream(this.outputFile+"//ST.out");
+
     }
 
     private void readTokens(){
@@ -115,6 +120,11 @@ public class MyScanner {
                 int symKey = addToSymTable(token);
                 this.addToPIF(token, "const", symKey);
             } else{
+                System.setOut(pifFileStream);
+                System.out.println("Lexical error at Line " + lineCount + ", Token " + tokenPosition + ": Invalid Token - " + token);
+                System.setOut(stFileStream);
+                System.out.println("Lexical error at Line " + lineCount + ", Token " + tokenPosition + ": Invalid Token - " + token);
+                System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
                 System.out.println("Lexical error at Line " + lineCount + ", Token " + tokenPosition + ": Invalid Token - " + token);
                 this.isError=true;
             }
@@ -136,14 +146,27 @@ public class MyScanner {
         }
     }
 
+    private void printPIFTable(){
+        System.setOut(this.pifFileStream);
+        System.out.println("PIF TABLE");
+        System.out.println("-----------------------------------------------------------------------------------------");
+        System.out.println(this.pif);
+    }
+
+    private void printSymTable(){
+        System.setOut(this.stFileStream);
+        System.out.println("SYM TABLE");
+        System.out.println("-----------------------------------------------------------------------------------------");
+        System.out.println(this.symTable);
+    }
+
     private void printTables(){
         if(!this.isError){
-            System.out.println("PIF TABLE");
-            System.out.println("-----------------------------------------------------------------------------------------");
-            System.out.println(this.pif);
-            System.out.println("SYM TABLE");
-            System.out.println("-----------------------------------------------------------------------------------------");
-            System.out.println(this.symTable);
+            this.printPIFTable();
+            this.printSymTable();
+            System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
+            System.out.println("Program"+this.inputFile+" is lexically correct");
+
         }
 
     }
@@ -171,12 +194,7 @@ public class MyScanner {
         if (token.matches("^-?\\d+$")) {
             return true;
         }
-
         if (token.matches("^\"[a-zA-Z0-9_]*\"")) {
-            return true;
-        }
-
-        if (token.matches("^true|false")) {
             return true;
         }
         return false;
