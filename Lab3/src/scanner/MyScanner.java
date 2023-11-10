@@ -16,7 +16,7 @@ public class MyScanner {
 
     private MySymTable symTable;
 
-    private MyHashTable  pif;
+    private MyPIFTable  pif;
 
     private ArrayList<String> tokens;
 

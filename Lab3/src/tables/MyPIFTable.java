@@ -4,11 +4,26 @@ import model.MyPair;
 
 import java.util.ArrayList;
 
-public class MyPIFTable extends MyHashTable{
-    @Override
+public class MyPIFTable{
+
+    ArrayList<MyPair<Object,Object>> pifTable;
+
+    public MyPIFTable(){
+        this.pifTable=new ArrayList<>();
+    }
+
     public void insert(Object key, Object value) {
-        int index = super.hash(key);
-        ArrayList<MyPair<Object, Object>> indexArray = hashTable.get(index);
-        indexArray.add(new MyPair<>(key, value));
+       pifTable.add(new MyPair<>(key, value));
+    }
+
+    @Override
+    public String toString(){
+        String returnString="";
+        int index=0;
+        for(MyPair pair:this.pifTable){
+            index++;
+            returnString+=index+".        "+pair+"\n";
+        }
+        return returnString;
     }
 }
