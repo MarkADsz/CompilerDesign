@@ -1,6 +1,5 @@
 package scanner;
 
-import tables.MyHashTable;
 import tables.MyPIFTable;
 import tables.MySymTable;
 
@@ -28,7 +27,11 @@ public class MyScanner {
 
     PrintStream stFileStream;
 
-    public MyScanner(String inputFile,String outputFile, String tokenFile) throws FileNotFoundException {
+    FiniteAutomata intFa;
+
+    FiniteAutomata idFa;
+
+    public MyScanner(String inputFile,String outputFile, String tokenFile, FiniteAutomata intFa, FiniteAutomata idFA) throws FileNotFoundException {
         this.inputFile=inputFile;
         this.outputFile=outputFile;
         this.tokenFile=tokenFile;
@@ -38,6 +41,8 @@ public class MyScanner {
         this.isError=false;
         this.pifFileStream = new PrintStream(this.outputFile+"//PIF.out");
         this.stFileStream = new PrintStream(this.outputFile+"//ST.out");
+        this.intFa=intFa;
+        this.idFa=idFA;
 
     }
 
@@ -187,13 +192,21 @@ public class MyScanner {
     }
 
     private boolean isIdentifier(String token) {
-        return token.matches("^[a-zA-Z_][a-zA-Z0-9_<>,]*$");
+        if(idFa.checkAccepted(token)){
+            return true;
+        }
+        return false;
+//        return token.matches("^[a-zA-Z_][a-zA-Z0-9_<>,]*$");
     }
 
     private boolean isConstant(String token) {
-        if (token.matches("^-?\\d+$")) {
+
+        if(intFa.checkAccepted(token)){
             return true;
         }
+//        if (token.matches("^-?\\d+$")) {
+//            return true;
+//        }
         if (token.matches("^\"[a-zA-Z0-9_]*\"")) {
             return true;
         }
