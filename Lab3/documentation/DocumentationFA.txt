@@ -1,0 +1,23 @@
+FA.in - BNF:
+
+<file> ::= <states> "\n" <alphabet> "\n" <initial_state> "\n" <final_states> "\n" <transitions>
+<states> ::= <state> | <state> " " <states>
+<initial_state> ::= <state>
+<final_states> ::= <state> | <state> " " <final_states>
+<alphabet> ::= <symbol> | <symbol> " " <alphabet>
+<transitions> ::= <transition> | <transition> "\n" <transitions>
+<transition> ::= <from_state> " " <symbols> " " <to_state>
+<from_state> ::= <state>
+<to_state> ::= <state>
+<symbols> ::= <symbol> | <symbol> "," <symbols>
+
+
+
+(integer.in)
+<state> ::= "p" | "q" | "s" | "t"
+<symbol> ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "-"
+
+
+(identifier.in)
+<state> ::= "p" | "q"
+<symbol> ::= "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z" | "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | ">" | "<" | "_" | "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
