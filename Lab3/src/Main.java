@@ -1,3 +1,4 @@
+import grammar.Grammar;
 import scanner.FiniteAutomata;
 import scanner.MyScanner;
 
@@ -5,25 +6,23 @@ import java.io.FileNotFoundException;
 
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
-        String TOKEN_FILE="C:\\UBB_FMI\\FLCD\\GitHub\\CompilerDesign\\Lab3\\input\\token.txt";
-        FiniteAutomata intFA=new FiniteAutomata("C:\\UBB_FMI\\FLCD\\GitHub\\CompilerDesign\\Lab3\\input\\integer.txt");
-        FiniteAutomata idFA=new FiniteAutomata("C:\\UBB_FMI\\FLCD\\GitHub\\CompilerDesign\\Lab3\\input\\identifier.txt");
-        MyScanner scanner1=new MyScanner("C:\\UBB_FMI\\FLCD\\GitHub\\CompilerDesign\\Lab3\\input\\p1.txt","C:\\UBB_FMI\\FLCD\\GitHub\\CompilerDesign\\Lab3\\output\\p1",TOKEN_FILE,intFA,idFA);
-        scanner1.start();
-
-        MyScanner scanner1err=new MyScanner("C:\\UBB_FMI\\FLCD\\GitHub\\CompilerDesign\\Lab3\\input\\p1err.txt","C:\\UBB_FMI\\FLCD\\GitHub\\CompilerDesign\\Lab3\\output\\p1err",TOKEN_FILE,intFA,idFA);
-        scanner1err.start();
-
-        MyScanner scanner2=new MyScanner("C:\\UBB_FMI\\FLCD\\GitHub\\CompilerDesign\\Lab3\\input\\p2.txt","C:\\UBB_FMI\\FLCD\\GitHub\\CompilerDesign\\Lab3\\output\\p2",TOKEN_FILE,intFA,idFA);
-        scanner2.start();
-
-        MyScanner scanner3=new MyScanner("C:\\UBB_FMI\\FLCD\\GitHub\\CompilerDesign\\Lab3\\input\\p3.txt","C:\\UBB_FMI\\FLCD\\GitHub\\CompilerDesign\\Lab3\\output\\p3",TOKEN_FILE,intFA,idFA);
-        scanner3.start();
-
-        FiniteAutomata finiteAutomata=new FiniteAutomata("C:\\UBB_FMI\\FLCD\\GitHub\\CompilerDesign\\Lab3\\input\\integer.txt");
-        finiteAutomata.displayThings();
-
-//        System.out.println(fa.checkAccepted("aa")) ;
+        Grammar g = new Grammar("C:\\UBB_FMI\\FLCD\\GitHub\\CompilerDesign\\Lab3\\input\\g2.txt");
+        while(true){
+            System.out.println("1. Set of non terminals");
+            System.out.println("2. Set of terminals");
+            System.out.println("3. Set of productions");
+            System.out.println("4. Productions for a given non terminal");
+            System.out.println("5. CFG check");
+            System.out.println("6. Exit");
+            var option = new java.util.Scanner(System.in).nextInt();
+            if(option == 6) {
+                break;
+            }else if(option > 5 || option < 1){
+                System.out.println("Invalid option");
+            } else{
+                g.doAction(option);
+            }
+        }
 
 
     }

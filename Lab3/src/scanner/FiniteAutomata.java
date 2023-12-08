@@ -149,15 +149,6 @@ public class FiniteAutomata {
         return lines;
     }
 
-    public static void writeToFile(String filename, String content) {
-        try {
-            java.io.FileWriter myWriter = new java.io.FileWriter(filename);
-            myWriter.write(content);
-            myWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public static ArrayList<String> splitString(String s) {
         String[] tokens = s.split(" ");
