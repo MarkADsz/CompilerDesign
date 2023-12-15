@@ -10,53 +10,52 @@ public class Parser {
 
     public Parser(Grammar grammar){
         this.grammar=grammar;
-//        this.firsts=new ArrayList<>();
-
     }
 
-    private List<String> first(String nonTerminal, List<String> firsts){
+    public String first(String nonTerminal, StringBuilder firsts){
         for(String element:this.grammar.getProductions().get(nonTerminal)){
             String firstOfElement=String.valueOf(element.charAt(0));
             if(this.grammar.getTerminals().contains(firstOfElement) || firstOfElement.equals("ε")){
-                firsts.add(firstOfElement);
+                firsts.append(firstOfElement);
             }
             else if(this.grammar.getNonTerminals().contains(firstOfElement)){
-                    first(firstOfElement,firsts);
-                }
+                first(firstOfElement,firsts);
+            }
         }
-        return firsts;
+        return firsts.toString();
     }
 
-    public List<String> first(String nonTerminal){
-        return this.first(nonTerminal,new ArrayList<>());
-    }
-
-    public List<String> follow(String nonTerminal, List<String> result) {
+    public String follow(String nonTerminal, StringBuilder result) {
         if(nonTerminal.equals(this.grammar.getStartingSymbol())){
-            result.add("$");
+            result.append("$");
+            return result.toString();
         }
-        for(Map.Entry<String,List<String>> production: this.grammar.getProductions().entrySet()){
-            for(String productionRHS:production.getValue()){
-                if(productionRHS.contains(nonTerminal)){
-                    //placement of the nonterminal
-                    int index=productionRHS.indexOf(nonTerminal);
-                    //if there is nothing after we add the Follow of LHS
-                    if(index==productionRHS.length()-1){
-                            result.addAll(follow(String.valueOf(productionRHS.charAt(index)),new ArrayList<>()));
-                    }else
-                        //if there is a nonterminal after the index
-                        if(this.grammar.getNonTerminals().contains(String.valueOf(productionRHS.charAt(index+1)))){
-                            result.addAll(this.first(String.valueOf(productionRHS.charAt(index+1)),new ArrayList<>()));
-                        } else if (this.grammar.getTerminals().contains(String.valueOf(productionRHS.charAt(index+1)))) { //if there is a terminal after index
-                            result.add(String.valueOf(productionRHS.charAt(index+1)));
+        for(Map.Entry<String, List<String>> entry : this.grammar.getProductions().entrySet()){
+            for(String production : entry.getValue()){
+                for(int i=0; i<production.length(); i+=1){
+                    if(String.valueOf(production.charAt(i)).equals(nonTerminal)){
+                        if(i == production.length() - 1 && !Objects.equals(entry.getKey(), String.valueOf(production.charAt(i)))){
+                            result.append(follow(entry.getKey(), new StringBuilder()));
                         }
+                        else for(int j=i+1; j<production.length(); j+=1){
+                            if (this.grammar.getNonTerminals().contains(String.valueOf(production.charAt(j)))) {
+                                String first = first(String.valueOf(production.charAt(j)), new StringBuilder());
+                                if(!first.contains("ε")){
+                                    result.append(first);
+                                    break;
+                                } else{
+                                    result.append(first.replace("ε",""));
+                                }
+                            } else if (this.grammar.getTerminals().contains(String.valueOf(production.charAt(j)))) {
+                                result.append(production.charAt(j));
+                                break;
+                            }
+                        }
+                    }
                 }
             }
-
-
         }
-
-    return result;
+        return result.toString();
     }
 
 }
