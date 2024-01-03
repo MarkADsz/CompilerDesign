@@ -1,4 +1,5 @@
 package grammar;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -41,10 +42,11 @@ public class Grammar {
                     String[] tokens = line.split("->");
                     String[] productions = tokens[1].split("\\|");
                     for(String s : productions){
-                        for(int i=0; i<s.length(); i++){
-                            if(this.terminals.contains(Character.toString(s.charAt(i))))
+                        String[] itemsInProduction = s.split(" ");
+                        for(String item:itemsInProduction){
+                            if(this.terminals.contains(item))
                                 continue;
-                            if(this.nonTerminals.contains(Character.toString(s.charAt(i))))
+                            if(this.nonTerminals.contains(item))
                                 continue;
                             throw new IOException();
                         }
@@ -78,7 +80,7 @@ public class Grammar {
         } else if (option == 4){
             String element = new java.util.Scanner(System.in).nextLine();
             System.out.println(this.productions.get(element));
-        } else {
+        } else if (option == 5) {
             this.checkIfCFG();
             if(this.checkIfCFG()){
                 System.out.println("The given grammar is a CFG.");

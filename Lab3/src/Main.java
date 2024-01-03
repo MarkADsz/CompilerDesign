@@ -3,7 +3,7 @@ import parser.Parser;
 import java.io.FileNotFoundException;
 
 public class Main {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws Exception {
         Grammar g = new Grammar("C:\\UBB_FMI\\FLCD\\GitHub\\CompilerDesign\\Lab3\\input\\g1.txt");
         Parser p = new Parser(g);
         parserTests();
@@ -37,21 +37,21 @@ public class Main {
 
 
     static void parserTests(){
-        Grammar g = new Grammar("inputs/g1.txt");
+        Grammar g = new Grammar("C:\\UBB_FMI\\FLCD\\GitHub\\CompilerDesign\\Lab3\\input\\g1.txt");
         Parser p = new Parser(g);
 
-        assertEqualLists("First(S)", p.first("S", new StringBuilder()), "a");
-        assertEqualLists("First(B)", p.first("B", new StringBuilder()), "c");
-        assertEqualLists("First(C)", p.first("C", new StringBuilder()), "bε");
-        assertEqualLists("First(D)", p.first("D", new StringBuilder()), "gε");
-        assertEqualLists("First(E)", p.first("E", new StringBuilder()), "gε");
-        assertEqualLists("First(F)", p.first("F", new StringBuilder()), "fε");
+        assertEqualLists("First(S)", p.first("S", new StringBuilder()).replace(" ",""), "a");
+        assertEqualLists("First(B)", p.first("B", new StringBuilder()).replace(" ",""), "c");
+        assertEqualLists("First(C)", p.first("C", new StringBuilder()).replace(" ",""), "bε");
+        assertEqualLists("First(D)", p.first("D", new StringBuilder()).replace(" ",""), "gε");
+        assertEqualLists("First(E)", p.first("E", new StringBuilder()).replace(" ",""), "gε");
+        assertEqualLists("First(F)", p.first("F", new StringBuilder()).replace(" ",""), "fε");
 
-        assertEqualLists("Follow(S)", p.follow("S", new StringBuilder()), "$");
-        assertEqualLists("Follow(B)", p.follow("B", new StringBuilder()), "gh");
-        assertEqualLists("Follow(C)", p.follow("C", new StringBuilder()), "gh");
-        assertEqualLists("Follow(D)", p.follow("D", new StringBuilder()), "h");
-        assertEqualLists("Follow(E)", p.follow("E", new StringBuilder()), "h");
+        assertEqualLists("Follow(S)", p.follow("S", new StringBuilder()).replace(" ",""), "$");
+        assertEqualLists("Follow(B)", p.follow("B", new StringBuilder()).replace(" ",""), "gh");
+        assertEqualLists("Follow(C)", p.follow("C", new StringBuilder()).replace(" ",""), "gh");
+        assertEqualLists("Follow(D)", p.follow("D", new StringBuilder()).replace(" ",""), "h");
+        assertEqualLists("Follow(E)", p.follow("E", new StringBuilder()).replace(" ",""), "h");
         System.out.println("All tests passed!");
     }
 

@@ -1,7 +1,7 @@
 program,decllist,declaration,type1,arraydecl,type,stmtlist,stmt,simplstmt,assignstmt,expression,term,factor,iostmt,structstmt,ifstmt,whilestmt,condition,RELATION
-start,;, {,},+,-,*,/,(,),citeste,scrie,intreg,caracter,IDENTIFIER,CONST,repeta,daca,altfel,<,<=,==,!=,>=,>
+start,=,;,[,],{,},+,-,*,/,(,),citeste,scrie,intreg,caracter,IDENTIFIER,CONST,repeta,daca,altfel,<,<=,==,!=,>=,>
 program
-program->start compound_statement
+program->start stmt
 decllist->declaration|declaration ; decllist
 declaration->type IDENTIFIER
 type1->intreg|caracter
@@ -14,7 +14,7 @@ assignstmt->IDENTIFIER = expression
 expression->expression + term|expression - term|term
 term->term * factor|term / factor|term / factor|factor
 factor->( expression )|IDENTIFIER|CONST
-iostmt->citeste ( IDENTIFIER )|scrie( IDENTIFIER )|scrie ( CONST )
+iostmt->citeste ( IDENTIFIER )|scrie ( IDENTIFIER )|scrie ( CONST )
 structstmt->stmtlist|ifstmt|whilestmt
 ifstmt->daca ( condition ) { stmt } [ altfel { stmt } ]
 whilestmt->repeta ( condition ) { stmt }

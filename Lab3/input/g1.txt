@@ -1,8 +1,9 @@
-E,R,T,Y,F
-+,*,),(,i
-E
-E->TR
-R->+TR
-T->FY
-Y->*FY
-F->(E)|i
+S,B,C,D,E,F
+a,h,c,b,g,f,ε
+S
+S->a B D h
+B->c C
+C->b C|ε
+D->E
+E->g|ε
+F->f|ε
