@@ -25,7 +25,7 @@ public class Parser {
         for(String nonTerminal:nonTerminals){
             for(String terminal: terminals){
                 Pair<String,String> tableRowCol= new Pair<>(nonTerminal,terminal);
-                this.parseTable.put(tableRowCol,null);
+                this.parseTable.put(tableRowCol,new Pair<>("",Arrays.asList()));
             }
         }
 
@@ -40,7 +40,7 @@ public class Parser {
                     }
                 }
                 else{
-                    this.parseTable.put(tableRowCol,null);
+                    this.parseTable.put(tableRowCol,new Pair<>("",Arrays.asList()));
                 }
 
             }
@@ -64,11 +64,12 @@ public class Parser {
             for(int i=0;i<firstElements.size();i++){
                 if(!firstElements.get(i).equals("ε")){
                     Pair<String,String> key=new Pair<>(nonterminal,firstElements.get(i));
-                    if (this.parseTable.get(key)==null) {
+                    if (this.parseTable.get(key).getKey().equals("") && this.parseTable.get(key).getValue().size()==0) {
                         if(productions.size()<i){
                             Pair<String,List<String>> value= new Pair<>(nonterminal,Arrays.asList(productions.get(i)));
                             this.parseTable.put(key,value);
                         }
+
                     }else{
                         //CONFLICT
                         System.out.println("Conflict!");
@@ -79,7 +80,7 @@ public class Parser {
                     List<String> followElements= Arrays.asList(followOfNonTerminal.split(" "));
                     for(String element: followElements){
                         Pair<String,String> key=new Pair<>(nonterminal,element);
-                        if(this.parseTable.get(key)==null){
+                        if(this.parseTable.get(key).getKey().equals("") && this.parseTable.get(key).getValue().size()==0){
                             Pair<String,List<String>> value= new Pair<>(nonterminal,Arrays.asList("ε"));
                             this.parseTable.put(key,value);
                         }else{
