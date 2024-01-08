@@ -14,6 +14,15 @@ public class ParseTable {
         table.put(key, value);
     }
 
+    public Pair<String, String> getKey(String nonTerminal, String element) {
+        return this.table.keySet()
+                .stream()
+                .filter(pair -> pair.getKey().equals(nonTerminal) && pair.getValue().equals(element))
+                .findFirst()
+                .orElse(null);  // or handle the case when no match is found
+    }
+
+
     public Pair<String, List<String>> get(Pair<String, String> key) {
         for (Map.Entry<Pair<String, String>, Pair<String, List<String>>> entry : table.entrySet()) {
             if (entry.getValue() != null) {
@@ -49,11 +58,12 @@ public class ParseTable {
                 Pair<String, String> key = entry.getKey();
                 Pair<String, List<String>> value = entry.getValue();
 
-                sb.append("M[").append(key.getKey()).append(",").append(key.getValue()).append("] = [")
-                        .append(value.getKey()).append(",").append(value.getValue()).append("]\n");
+                sb.append("M[").append(key.getKey()).append(",").append(key.getValue()).append("] = ")
+                        .append(value.getKey()).append(" --> ").append(value.getValue()).append("\n");
             }
         }
 
         return sb.toString();
     }
+
 }

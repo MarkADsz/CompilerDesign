@@ -5,6 +5,8 @@ import model.MyPair;
 import model.Pair;
 import model.ParseTable;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class Parser {
@@ -63,9 +65,9 @@ public class Parser {
 
             for(int i=0;i<firstElements.size();i++){
                 if(!firstElements.get(i).equals("ε")){
-                    Pair<String,String> key=new Pair<>(nonterminal,firstElements.get(i));
+                    Pair<String,String> key=this.parseTable.getKey(nonterminal,firstElements.get(i));
                     if (this.parseTable.get(key).getKey().equals("") && this.parseTable.get(key).getValue().size()==0) {
-                        if(productions.size()<i){
+                        if(productions.size()>i){
                             Pair<String,List<String>> value= new Pair<>(nonterminal,Arrays.asList(productions.get(i)));
                             this.parseTable.put(key,value);
                         }
@@ -77,16 +79,19 @@ public class Parser {
                 }
                 else{
                     String followOfNonTerminal = this.follow(nonterminal,new StringBuilder());
-                    List<String> followElements= Arrays.asList(followOfNonTerminal.split(" "));
+
+                    List<String> followElements= Arrays.asList(followOfNonTerminal.strip().split(" "));
                     for(String element: followElements){
-                        Pair<String,String> key=new Pair<>(nonterminal,element);
-                        if(this.parseTable.get(key).getKey().equals("") && this.parseTable.get(key).getValue().size()==0){
-                            Pair<String,List<String>> value= new Pair<>(nonterminal,Arrays.asList("ε"));
-                            this.parseTable.put(key,value);
-                        }else{
-                            //CONFLICT
-                            System.out.println("Conflict");
-                        }
+                        if(!element.equals("")){
+                            Pair<String,String> key=this.parseTable.getKey(nonterminal,element);
+                            if(this.parseTable.get(key).getKey().equals("") && this.parseTable.get(key).getValue().size()==0){
+                                Pair<String,List<String>> value= new Pair<>(nonterminal,Arrays.asList("ε"));
+                                this.parseTable.put(key,value);
+                            }else{
+                                //CONFLICT
+                                System.out.println("Conflict");
+                            }
+                            }
                     }
 
                 }
@@ -100,6 +105,14 @@ public class Parser {
     }
 
     public String first(String nonTerminal, StringBuilder firsts){
+        return this.first(nonTerminal,firsts,new HashSet<>());
+    }
+
+    public String first(String nonTerminal, StringBuilder firsts, Set<String> visited){
+        if(visited.contains(nonTerminal)){
+            return firsts.toString();
+        }
+        visited.add(nonTerminal);
         for(String element:this.grammar.getProductions().get(nonTerminal)){
             String[] tokens=element.split(" ");
             String firstOfElement=tokens[0];
@@ -112,7 +125,7 @@ public class Parser {
                     }
                 }
                 else if(this.grammar.getNonTerminals().contains(firstOfElement)){
-                    first(firstOfElement,firsts);
+                    first(firstOfElement,firsts,visited);
                 }
             }
 
@@ -181,40 +194,23 @@ public class Parser {
         return result.toString();
     }
 
-//    public String follow(String nonTerminal, StringBuilder result) {
-//        if(!this.grammar.getNonTerminals().contains(nonTerminal))
-//            return "THIS IS NOT A NONTERMINAL";
-//        if(nonTerminal.equals(this.grammar.getStartingSymbol())){
-//            result.append("$");
-//            return result.toString();
-//        }
-//        for(Map.Entry<String, List<String>> entry : this.grammar.getProductions().entrySet()){
-//            for(String production : entry.getValue()){
-//                String[] tokens=production.split(" ");
-//                for(int i=0;i< tokens.length;i++){
-//                    if(tokens[i].equals(nonTerminal)){
-//                        if(tokens[i].equals(tokens[tokens.length-1])&& !Objects.equals(entry.getKey(), tokens[i])){
-//                            result.append(follow(entry.getKey(), new StringBuilder()));
-//                        }
-//                        else for(int j=i+1; j< tokens.length; j+=1){
-//                            if (this.grammar.getNonTerminals().contains(tokens[j])) {
-//                                String first = first(tokens[j], new StringBuilder());
-//                                if(!first.contains("ε")){
-//                                    result.append(first);
-//                                    break;
-//                                } else{
-//                                    result.append(first.replace("ε",""));
-//                                }
-//                            } else if (this.grammar.getTerminals().contains(tokens[j])) {
-//                                result.append(tokens[j]);
-//                                break;
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        return result.toString();
-//    }
+
+
+    public void printTable(String file){
+        if(file.equals("g1")){
+            try (FileWriter fileWriter = new FileWriter("C:\\UBB_FMI\\FLCD\\GitHub\\CompilerDesign\\Lab3\\output\\g1-parseTable.txt")) {
+                fileWriter.write(this.parseTable.toString());
+            } catch (IOException e) {
+                e.printStackTrace(); // Handle the exception according to your needs
+            }
+        }
+        else {
+            try (FileWriter fileWriter = new FileWriter("C:\\UBB_FMI\\FLCD\\GitHub\\CompilerDesign\\Lab3\\output\\g2-parseTable.txt")) {
+                fileWriter.write(this.parseTable.toString());
+            } catch (IOException e) {
+                e.printStackTrace(); // Handle the exception according to your needs
+            }
+        }
+    }
 
 }
